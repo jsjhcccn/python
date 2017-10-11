@@ -1,0 +1,96 @@
+<!doctype html>
+
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #herder {
+            height: 50px;
+        }
+
+        #main {
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        #main .main-left {
+            width: 45%;
+            height: 700px;
+            border: 2px dotted #0F0F0F;
+            overflow-y:scroll; 
+            overflow-x:scroll;
+            float: left;
+            margin-left:15px;
+        }
+
+        #main .main-right {
+            width: 45%;
+            height: 700px;
+            border: 2px dotted #0F0F0F;
+            float: right;
+            overflow-y:scroll; 
+            overflow-x:scroll;
+            margin-right:15px;
+        }
+
+        #footer {
+            width: 100%;
+            height: 50px;
+
+            margin: 0 auto;
+        }
+    </style>
+    <script
+    type="text/javascript"
+    src="/static/js/jquery-3.2.1.min.js"></script>
+    <script>
+
+        function btnclick() {
+
+            var l = encodeURI($("#location").val());
+            var k = encodeURI($("#keywords").val());
+            window.location = "/?l=" + l + "&k=" + k;
+        }
+        function resetclick() {
+
+            document.getElementById("location").value="";
+            document.getElementById("keywords").value="";
+            document.getElementById('main-left').innerHTML = "";
+            document.getElementById('main-right').innerHTML = "";
+            window.location = "/?l=&k=";
+        }
+    </script>
+</head>
+
+<body>
+    <br/>
+    <br/>
+    <br/>
+    <div class="page">
+        <div id="herder">
+                location:<input type="text" id="location" value={{location}}> 
+                keywords:<input type="text" id="keywords" value={{keywords}}>
+            <button type="button" onclick="btnclick()">query</button>
+            <button type="button" onclick="resetclick()">reset</button>
+        </div>
+        <div id="main">
+            <div class="main-left" id="main-left">
+                {% if leftcon %}
+               {{leftcon|safe}} 
+                 {% else %}
+                <h1>left-side:no resault</h1>
+                {%endif%}
+            </div>
+            
+            <div class="main-right" id="main-right"> {% if rightcon %} {{rightcon|safe}} {% else %}
+                <h1>right-side: no resault</h1>
+                {%endif%}</div>
+
+        </div>
+        <div id="footer">页脚</div>
+    </div>
+</body>
