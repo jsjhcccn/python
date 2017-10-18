@@ -92,7 +92,7 @@
             var k = encodeURI($("#keywords").val());
             var txtcmmt = encodeURI($("#txtcomment").val());
             $.post("/recommend", { 'key': k, 'loc': l, 'comment': txtcmmt, 'sitename': hdsitename }, function (result) {
-                alert(result);
+                //alert(result);
                 window.location = "/?l=&k=";
             });
         }
