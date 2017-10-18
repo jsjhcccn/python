@@ -10,7 +10,7 @@ CREATE TABLE `searchrecoder` (
   `reqkeywds` varchar(255) default NULL,
   `remark` text,
   `recommendsite` varchar(255) default NULL,
-  `addTime` datetime default NULL,
+  `addTime` timestamp NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`reqid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
