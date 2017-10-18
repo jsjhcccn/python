@@ -106,14 +106,16 @@
     <div class="page">
         <div id="herder">
             location:
-            <input type="text" id="location" value={{location}}> keywords:
-            <input type="text" id="keywords" value={{keywords}}>
+           
+            <input type="text" id="location" value='{{location}}'>
+            keywords:
+            <input type="text" id="keywords" value='{{keywords}}'>
             <button type="button" onclick="btnclick()">query</button>
             <button type="button" onclick="resetclick()">reset</button>
         </div>
         <div id="main">
-            <input type="hidden" id='hdleft' value={{leftsite}}>
-            <input type="hidden" id='hdright' value={{rightsite}}>
+            <input type="hidden" id='hdleft' value={{leftsite|safe}}>
+            <input type="hidden" id='hdright' value={{rightsite|safe}}>
             <div class="main-left" id="main-left">
                 {% if leftcon %} {{leftcon|safe}} {% else %}
                 <h1>left-side:no resault</h1>

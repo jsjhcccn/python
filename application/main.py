@@ -17,8 +17,8 @@ app = Flask(__name__)
 def index():
     location = request.args.get('l', "", type=str)
     keywords = request.args.get('k', "", type=str)
-    locationva = urllib.parse.unquote(location)
-    keywordsva = urllib.parse.unquote(keywords)
+    locationva = str(urllib.parse.unquote(location))
+    keywordsva = str(urllib.parse.unquote(keywords))
     readgadata = ""
     readdata = ""
     outputstrleft = ""
@@ -43,7 +43,7 @@ def index():
         outputstrright = readdata
         leftsite="glassdoor"
         rightsite="indeed"
-    return render_template('index.html', leftcon=outputstrleft, rightcon=outputstrright, location=locationva, keywords=keywordsva,leftsite=leftsite,rightsite=rightsite)
+    return render_template('index.html', leftcon=outputstrleft, rightcon=outputstrright, location=str(locationva), keywords=str(keywordsva),leftsite=leftsite,rightsite=rightsite)
 
 @app.route('/recommend', methods=['POST'])
 def recommend():

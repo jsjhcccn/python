@@ -33,7 +33,6 @@ class dbcall:
       def save(self):
             Session = sessionmaker(bind=engine)
             session = Session()
-        
             obj = searchrecoder(reqid=0, reqloc=self.reqloc,reqkeywds=self.reqkeywds,recommendsite=self.recommendsite,remark=self.remark,addTime=datetime.datetime.strftime(datetime.datetime.now(),'%Y-%m-%d %H:%M:%S'))
             session.add(obj)
             session.commit()
