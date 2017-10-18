@@ -24,12 +24,13 @@ class datereader():
             'Accept-Encoding': 'gzip, deflate, sdch, br',
             'Accept-Language': 'zh-CN,zh;q=0.8',
             'Connection': 'keep-alive',
-            'Cookie': 'CTK=1bqovg9g3bs8qb1b; RF="TFTzyBUJoNqCJDHgQfSNbPm-LZhM4VS_tZiqL3fo8v2inIV326BeFlLDxui7iCM7ZTFbxSksY-Cwod9ZXouJGQ=="; PREF="TM=1506224413032:L=%E4%B8%8A%E6%B5%B7%E5%B8%82"; showJaPromo=1; INDEED_CSRF_TOKEN=RoInVMtnGPMU74xsFFQMvdcZa6mPMkQN; BIGipServerjob_hkg=!bBkZhW245BIYToKEK1mttHQLc9JARuCYmvqpNb16cwgwidPQYV51BbBSD8vJXW5ifUe1cREKW4ZEL8o=; JSESSIONID=A7A9A2E57EBE965A951536D2E320E1ED.jasxA_hkg-job2; RQ="q=%E6%B5%8B%E8%AF%95&l=%E4%B8%8A%E6%B5%B7%E5%B8%82&ts=1506610808321:q=%E5%B7%A5%E4%BD%9C&l=%E4%B8%8A%E6%B5%B7%E5%B8%82&ts=1506609426412:q=%E6%B5%8B%E8%AF%95%E5%B7%A5%E7%A8%8B%E5%B8%88&l=%E4%B8%8A%E6%B5%B7%E5%B8%82&ts=1506605866823:q=%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88+%22.NET%22+%E8%BD%AF%E4%BB%B6+title%3A%E9%AB%98%E7%BA%A7+company%3A%E6%B4%8B%E7%A0%81%E5%A4%B4+-%E6%B5%8B%E8%AF%95&l=%E4%B8%8A%E6%B5%B7%E5%B8%82&sort=date&ts=1506225465362:q=%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%B8%88&l=%E4%B8%8A%E6%B5%B7%E5%B8%82&ts=1506225240515"; UD="LA=1506610808:LV=1506224413:CV=1506605866:TS=1506224413:SG=3d415812ffd69cdc84fd4dcf0718e983"; TS01d65e80=0160a2beff1bdd2d1a0483a8049086d39c76b411ebe6d43c5effd1b8d8d23375efda465ebbd9ee7f552fe35a8c75be9cbbeb2d7207f14ea0de7c75e90126559cd96700122e6d27e3a27acb59e761c91064022f8de685f087efec97b7eab809a74f626f0066cb25055e9c4b14b33bbb26f8f87f1efafbc24e4d2fc6581a99ff3fdf291c876f; _ga=GA1.2.543069346.1506224844; _gid=GA1.2.1221346341.1506606351; _gat=1; _gali=fj; PTK="tk=1br4gd2qk769led7&type=hp&subtype=form&wrqc=1"',
-            'Host': 'cn.indeed.com',
-            'Referer': 'https://cn.indeed.com',
+            'Cookie': 'BIGipServerjob_sjc=!EelkXEM53tKwzt6UCC+AfECqWukOeaaTnt4JPYghwnZroBUoHebecC51s9PXJHwfokhfyvrSaiZVx6A=; CTK=1bsnc9c0a1d780pp; ctkgen=1; JSESSIONID=86B901361B3274A1E0B927295FC99BD7.jasxA_sjc-job10; INDEED_CSRF_TOKEN=yu3dTBpMZaN94jfEyLRJg4LOwgligbNE; __guid=192154668.1704509127695318000.1508318163461.3208; NCR=1; _gali=fj; PREF="TM=1508318210314:L=Chicago"; RQ="q=test&l=Chicago&ts=1508318210319"; UD="LA=1508318210:CV=1508318210:TS=1508318210:SG=2af87c9ca2f63f79de185840be3966e5"; monitor_count=5; _ga=GA1.2.1389021004.1508318165; _gid=GA1.2.1541850656.1508318165',
+            'Host': 'www.indeed.com',
+            'Referer': 'https://www.indeed.com',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104 Safari/537.36 Core/1.53.3408.400 QQBrowser/9.6.12028.400'}
-        temurl = str("https://cn.indeed.com/" + urllib.parse.quote("工作") + "?q=" + urllib.parse.quote(self.keywords) +
-                     "&l=" + urllib.parse.quote(self.loctaion) + "&ts=1506609441994&rq=1&fromage=last")
+        # temurl = str("https://www.indeed.com/" + urllib.parse.quote("jobs") + "?q=" + urllib.parse.quote(self.keywords) +
+        #              "&l=" + urllib.parse.quote(self.loctaion) + "&ts=1506609441994&rq=1&fromage=last")
+        temurl=str("https://www.indeed.com/q-"+urllib.parse.quote(self.keywords)+"-l-"+urllib.parse.quote(self.loctaion)+"-jobs.html")
         b = b'/:?='
         request = urllib.request.Request(temurl, headers=my_headers)
         yresponse = urllib.request.urlopen(request)
@@ -179,7 +180,7 @@ class datereader():
             # 获取所有job描述
             if a_jobTitle is not None and len(a_jobTitle) > 0:
                 for aitem in a_jobTitle[0].children:
-                    teampresult=teampresult+aitem.text
+                    teampresult=teampresult+aitem.text.replace("Glassdoor est.","").replace("Glassdoor","")
                     teampresult = teampresult + "<br /><br />"
                     teampresult = teampresult + "<hr />"
                 return teampresult
