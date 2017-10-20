@@ -1,5 +1,1 @@
-Fri, 20 Oct 2017 15:38:28 _internal.py[line:87] INFO 127.0.0.1 - - [20/Oct/2017 15:38:28] "GET /?l=%E5%A4%A7%E5%B8%88%E5%A4%A7%E5%B8%88%E7%9A%84&k=%E5%A4%A7%E5%A3%B0%E9%81%93 HTTP/1.1" 200 -
-Fri, 20 Oct 2017 15:39:02 datereader.py[line:108] ERROR [Errno 11004] getaddrinfo failed
-Fri, 20 Oct 2017 15:39:03 datereader.py[line:153] ERROR [Errno 11004] getaddrinfo failed
-Fri, 20 Oct 2017 15:39:03 datereader.py[line:206] ERROR [Errno 11004] getaddrinfo failed
-Fri, 20 Oct 2017 15:39:03 _internal.py[line:87] INFO 127.0.0.1 - - [20/Oct/2017 15:39:03] "GET /?l=%E5%A4%A7%E5%B8%88%E5%A4%A7%E5%B8%88%E7%9A%84&k=%E5%A4%A7%E5%A3%B0%E9%81%93 HTTP/1.1" 200 -
+Fri, 20 Oct 2017 20:59:03 _internal.py[line:87] INFO 127.0.0.1 - - [20/Oct/2017 20:59:03] "GET /?l=moscow&k=test HTTP/1.1" 200 -

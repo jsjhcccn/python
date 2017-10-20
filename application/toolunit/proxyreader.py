@@ -12,18 +12,32 @@ class proxyreader():
                 serverlst = line.split(',')
                 if len(serverlst) > 0:
                     serveritem = ProxyEntity(
-                        serverlst[0], serverlst[1], serverlst[2], serverlst[3])
+                        serverlst[0], serverlst[1], serverlst[2], serverlst[3].replace("\n",""))
                     self.__lista.append(serveritem)
    
 
     def getProxyClientConfig(self):
         if len(self.__lista) > 0:
-            proxyitem = self.__lista[random.randint(0, len(self.__lista))]
+            proxyitem = self.__lista[random.randint(0, len(self.__lista)-1)]
             if proxyitem is not None:
                 __proxinfo = {
                     'host': proxyitem.ip,
                     'port': int(proxyitem.port),
                     'user': proxyitem.username,
                     'pass': proxyitem.userpassword
+                }
+            else:
+                __proxinfo={
+                    'host': "",
+                    'port': 0,
+                    'user': "",
+                    'pass': ""
+                }
+        else:
+            __proxinfo={
+                    'host': "",
+                    'port': 0,
+                    'user': "",
+                    'pass': ""
                 }
         return __proxinfo

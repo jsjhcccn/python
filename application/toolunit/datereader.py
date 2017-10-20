@@ -5,13 +5,16 @@ from bs4 import BeautifulSoup
 import logging
 
 class datereader():
-    def __init__(self, loctaion, keywords):
+    def __init__(self, loctaion, keywords,servlst):
         self.loctaion = loctaion
         self.keywords = keywords
         self.__lista = []
         self.__listb = []
         self.proxy_handler = urllib.request.ProxyHandler({})
-
+        
+        if servlst is not None and servlst["host"] != "":
+            self.proxy_handler = urllib.request.ProxyHandler({"http": "http://%(user)s:%(pass)s@%(host)s:%(port)d" % servlst})
+    
     # 获取indeed数据
     def readdata(self):
         logging.basicConfig(level=logging.DEBUG,

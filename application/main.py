@@ -9,12 +9,15 @@ import random
 from entity.searchrecoder import dbcall
 import datetime
 app = Flask(__name__)
-
-#servlst = proxyreader().getProxyClientConfig()
-
+servlst = proxyreader()
+app.add_template_global(servlst, 'servlst')
+def get_servlst():#获取全局变量
+    return servlst
 
 @app.route('/')
 def index():
+    servlst=get_servlst()
+    tempserver=servlst.getProxyClientConfig();
     location = request.args.get('l', "", type=str)
     keywords = request.args.get('k', "", type=str)
     locationva = str(urllib.parse.unquote(location))
@@ -29,7 +32,7 @@ def index():
         readdata = ""
         readgadata = ""
     else:
-        proxyrd = datereader(locationva, keywordsva)
+        proxyrd = datereader(locationva, keywordsva,tempserver)
         readdata = proxyrd.readdata()
         readgadata = proxyrd.readgadata()
     rdindex = random.randint(0, 1)
