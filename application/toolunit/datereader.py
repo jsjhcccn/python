@@ -2,7 +2,7 @@ import urllib
 import zlib
 import json
 from bs4 import BeautifulSoup
-
+import logging
 
 class datereader():
     def __init__(self, loctaion, keywords):
@@ -14,6 +14,11 @@ class datereader():
 
     # 获取indeed数据
     def readdata(self):
+        logging.basicConfig(level=logging.DEBUG,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S',
+                filename='myapp.log',
+                filemode='w')
         """"" if servlst["host"] != "":
             self.proxy_handler = urllib.request.ProxyHandler(
                 {"http": "http://%(user)s:%(pass)s@%(host)s:%(port)d" % servlst})"""
@@ -32,72 +37,77 @@ class datereader():
         #              "&l=" + urllib.parse.quote(self.loctaion) + "&ts=1506609441994&rq=1&fromage=last")
         temurl=str("https://www.indeed.com/q-"+urllib.parse.quote(self.keywords)+"-l-"+urllib.parse.quote(self.loctaion)+"-jobs.html")
         b = b'/:?='
-        request = urllib.request.Request(temurl, headers=my_headers)
-        yresponse = urllib.request.urlopen(request)
-        yread = yresponse.read()
-        rspheaders = yresponse.info()
-        teampresult = ""
-        if ('Content-Encoding' in rspheaders and rspheaders['Content-Encoding'] == 'gzip') or ('content-encoding' in rspheaders and rspheaders['content-encoding'] == 'gzip'):
-            decompressed_data = zlib.decompress(yread, 16 + zlib.MAX_WBITS)
-            ystr = decompressed_data.decode('utf8')
-        else:
-            ystr = yread.decode('utf8', 'ignore').encode('GB2312')
-        soup = BeautifulSoup(ystr, 'html.parser')
-        invalid_location_div = soup.find_all(
-            'div', attrs={'class': 'invalid_location'}, limit=1)
-        if invalid_location_div is not None and len(invalid_location_div) > 0:
-            return invalid_location_div[0].text.replace("\n", "<br/>")
-        else:
-            bad_query_div = soup.find_all(
-                'div', attrs={'class': 'bad_query'}, limit=1)
-            if bad_query_div is not None and len(bad_query_div) > 0:
-                return bad_query_div[0].text.replace("\n", "<br/>")
+        try:
+            request = urllib.request.Request(temurl, headers=my_headers)
+            yresponse = urllib.request.urlopen(request)
+            yread = yresponse.read()
+            rspheaders = yresponse.info()
+            teampresult = ""
+            if ('Content-Encoding' in rspheaders and rspheaders['Content-Encoding'] == 'gzip') or ('content-encoding' in rspheaders and rspheaders['content-encoding'] == 'gzip'):
+                decompressed_data = zlib.decompress(yread, 16 + zlib.MAX_WBITS)
+                ystr = decompressed_data.decode('utf8')
             else:
-                # 获取第一个节点内容
-                a_jobTitle = soup.find_all(
-                    'a', attrs={'data-tn-element': 'jobTitle'})
-                # 获取所有job描述
-                if a_jobTitle is not None and len(a_jobTitle) > 0:
-                    for aitem in a_jobTitle:
-                        teampresult = teampresult + aitem.text + "<br/>"
+                ystr = yread.decode('utf8', 'ignore').encode('GB2312')
+            soup = BeautifulSoup(ystr, 'html.parser')
+            invalid_location_div = soup.find_all(
+                'div', attrs={'class': 'invalid_location'}, limit=1)
+            if invalid_location_div is not None and len(invalid_location_div) > 0:
+                return invalid_location_div[0].text.replace("\n", "<br/>")
+            else:
+                bad_query_div = soup.find_all(
+                    'div', attrs={'class': 'bad_query'}, limit=1)
+                if bad_query_div is not None and len(bad_query_div) > 0:
+                    return bad_query_div[0].text.replace("\n", "<br/>")
+                else:
+                    # 获取第一个节点内容
+                    a_jobTitle = soup.find_all(
+                        'a', attrs={'data-tn-element': 'jobTitle'})
+                    # 获取所有job描述
+                    if a_jobTitle is not None and len(a_jobTitle) > 0:
+                        for aitem in a_jobTitle:
+                            teampresult = teampresult + aitem.text + "<br/>"
 
-                        div_name = aitem.parent.find_all(
-                            'span', attrs={'class': 'company'}, limit=1)
-                        if div_name is not None and len(div_name) > 0:
-                            teampresult = teampresult + div_name[0].text
-                        else:
-                            div_name = aitem.parent.parent.find_all(
+                            div_name = aitem.parent.find_all(
                                 'span', attrs={'class': 'company'}, limit=1)
                             if div_name is not None and len(div_name) > 0:
                                 teampresult = teampresult + div_name[0].text
-                        div_location = aitem.parent.find_all(
-                            'span', attrs={'class': 'location'}, limit=1)
-                        if div_location is not None and len(div_location) > 0:
-                            teampresult = teampresult + \
-                                "-" + div_location[0].text
-                        else:
-                            div_location = aitem.parent.parent.find_all(
+                            else:
+                                div_name = aitem.parent.parent.find_all(
+                                    'span', attrs={'class': 'company'}, limit=1)
+                                if div_name is not None and len(div_name) > 0:
+                                    teampresult = teampresult + div_name[0].text
+                            div_location = aitem.parent.find_all(
                                 'span', attrs={'class': 'location'}, limit=1)
                             if div_location is not None and len(div_location) > 0:
                                 teampresult = teampresult + \
                                     "-" + div_location[0].text
-                        teampresult = teampresult + "<br/>"
-                        div_discrip = aitem.parent.find_all(
-                            'span', attrs={'class': 'summary'}, limit=1)
-                        if div_discrip is not None and len(div_discrip) > 0:
-                            teampresult = teampresult + \
-                                div_discrip[0].text + "<br/>"
-                        else:
-                            div_discrip = aitem.parent.parent.find_all(
+                            else:
+                                div_location = aitem.parent.parent.find_all(
+                                    'span', attrs={'class': 'location'}, limit=1)
+                                if div_location is not None and len(div_location) > 0:
+                                    teampresult = teampresult + \
+                                        "-" + div_location[0].text
+                            teampresult = teampresult + "<br/>"
+                            div_discrip = aitem.parent.find_all(
                                 'span', attrs={'class': 'summary'}, limit=1)
                             if div_discrip is not None and len(div_discrip) > 0:
                                 teampresult = teampresult + \
                                     div_discrip[0].text + "<br/>"
-                        teampresult = teampresult + "<br /><br />"
-                        teampresult = teampresult + "<hr />"
-                    return teampresult
-                else:
-                    return teampresult
+                            else:
+                                div_discrip = aitem.parent.parent.find_all(
+                                    'span', attrs={'class': 'summary'}, limit=1)
+                                if div_discrip is not None and len(div_discrip) > 0:
+                                    teampresult = teampresult + \
+                                        div_discrip[0].text + "<br/>"
+                            teampresult = teampresult + "<br /><br />"
+                            teampresult = teampresult + "<hr />"
+                        return teampresult
+                    else:
+                        return teampresult
+        except Exception as err:
+            logging.error(err.reason)
+            return "net error"
+       
 
     # glassdoor站点根据位置获取locationId
     def readlocid(self):
@@ -118,26 +128,31 @@ class datereader():
         temurl = str("https://www.glassdoor.com/findPopularLocationAjax.htm?term=" +
                      urllib.parse.quote(self.loctaion) + "&maxLocationsToReturn=10")
         b = b'/:?='
-        request = urllib.request.Request(temurl, headers=my_headers)
-        yresponse = urllib.request.urlopen(request)
-        yread = yresponse.read()
-        rspheaders = yresponse.info()
-        teampresult = ""
-        if ('Content-Encoding' in rspheaders and rspheaders['Content-Encoding'] == 'gzip') or ('content-encoding' in rspheaders and rspheaders['content-encoding'] == 'gzip'):
-            decompressed_data = zlib.decompress(yread, 16 + zlib.MAX_WBITS)
-            ystr = decompressed_data.decode('utf8')
-        else:
-            ystr = yread.decode('utf8', 'ignore').encode('GB2312')
-        if(ystr == ""):
-            return "-1"
-        else:
-            hjson = json.loads(ystr)
-           
-            if len(hjson)>0:
-                tempid=hjson[0]['locationId']
-                return tempid
+        try:
+            request = urllib.request.Request(temurl, headers=my_headers)
+            yresponse = urllib.request.urlopen(request)
+            yread = yresponse.read()
+            rspheaders = yresponse.info()
+            teampresult = ""
+            if ('Content-Encoding' in rspheaders and rspheaders['Content-Encoding'] == 'gzip') or ('content-encoding' in rspheaders and rspheaders['content-encoding'] == 'gzip'):
+                decompressed_data = zlib.decompress(yread, 16 + zlib.MAX_WBITS)
+                ystr = decompressed_data.decode('utf8')
             else:
+                ystr = yread.decode('utf8', 'ignore').encode('GB2312')
+            if(ystr == ""):
                 return "-1"
+            else:
+                hjson = json.loads(ystr)
+            
+                if len(hjson)>0:
+                    tempid=hjson[0]['locationId']
+                    return tempid
+                else:
+                    return "-1"
+        except Exception as identi:
+               logging.error(identi.reason)
+               return "-1"
+
 
     # 获取indeed数据
     def readgadata(self):
@@ -159,31 +174,35 @@ class datereader():
         temurl = str("https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=false&clickSource=searchBtn&typedKeyword=" +
                      urllib.parse.quote(self.keywords) + "&sc.keyword=" + urllib.parse.quote(self.keywords) + "&locT=C&locId=" + str(locationId) + "&jobType=")
         b = b'/:?='
-        request = urllib.request.Request(temurl, headers=my_headers)
-        yresponse = urllib.request.urlopen(request)
-        yread = yresponse.read()
-        rspheaders = yresponse.info()
-        teampresult = ""
-        if ('Content-Encoding' in rspheaders and rspheaders['Content-Encoding'] == 'gzip') or ('content-encoding' in rspheaders and rspheaders['content-encoding'] == 'gzip'):
-            decompressed_data = zlib.decompress(yread, 16 + zlib.MAX_WBITS)
-            ystr = decompressed_data.decode('utf8')
-        else:
-            ystr = yread.decode('utf8', 'ignore').encode('GB2312')
-        soup = BeautifulSoup(ystr, 'html.parser')
-        invalid_location_div = soup.find_all(
-            'div', attrs={'class': 'noResults padVert'}, limit=1)
-        if invalid_location_div is not None and len(invalid_location_div) > 0:
-            return invalid_location_div[0].text.replace("\n", "<br/>")
-        else:
-            # 获取第一个节点内容
-            a_jobTitle = soup.find_all('ul', attrs={'class': 'jlGrid hover'})
-            # 获取所有job描述
-            if a_jobTitle is not None and len(a_jobTitle) > 0:
-                for aitem in a_jobTitle[0].children:
-                    teampresult=teampresult+aitem.text.replace("Glassdoor est.","").replace("Glassdoor","")
-                    teampresult = teampresult + "<br /><br />"
-                    teampresult = teampresult + "<hr />"
-                return teampresult
-
+        try:
+            request = urllib.request.Request(temurl, headers=my_headers)
+            yresponse = urllib.request.urlopen(request)
+            yread = yresponse.read()
+            rspheaders = yresponse.info()
+            teampresult = ""
+            if ('Content-Encoding' in rspheaders and rspheaders['Content-Encoding'] == 'gzip') or ('content-encoding' in rspheaders and rspheaders['content-encoding'] == 'gzip'):
+                decompressed_data = zlib.decompress(yread, 16 + zlib.MAX_WBITS)
+                ystr = decompressed_data.decode('utf8')
             else:
-                return teampresult
+                ystr = yread.decode('utf8', 'ignore').encode('GB2312')
+            soup = BeautifulSoup(ystr, 'html.parser')
+            invalid_location_div = soup.find_all(
+                'div', attrs={'class': 'noResults padVert'}, limit=1)
+            if invalid_location_div is not None and len(invalid_location_div) > 0:
+                return invalid_location_div[0].text.replace("\n", "<br/>")
+            else:
+                # 获取第一个节点内容
+                a_jobTitle = soup.find_all('ul', attrs={'class': 'jlGrid hover'})
+                # 获取所有job描述
+                if a_jobTitle is not None and len(a_jobTitle) > 0:
+                    for aitem in a_jobTitle[0].children:
+                        teampresult=teampresult+aitem.text.replace("Glassdoor est.","").replace("Glassdoor","")
+                        teampresult = teampresult + "<br /><br />"
+                        teampresult = teampresult + "<hr />"
+                    return teampresult
+                else:
+                    return teampresult
+        except Exception as identifier:
+            logging.error(identifier.reason)
+            return "net error"
+        
