@@ -40,6 +40,8 @@
 </head>
 
 <body>
+        <input type="hidden" id='hdleft' value={{leftsite|safe}}>
+        <input type="hidden" id='hdright' value={{rightsite|safe}}>
     <div class="navbar-search form-inline col-md-4 pr-0 pl-0 my-2 my-lg-0">
         <nav class="navbar navbar-expand-md fixed-top bg-light">
             <input class="form-control mr-sm-2 col-md-2" type="text" id="keywords" name="keywords" placeholder="keywords" aria-label="keywords"
@@ -49,7 +51,30 @@
             <button class="btn btn-search my-2 mr-sm-2  col-md-2" type="button" onclick="btnclick()">query</button>
             <button class="btn btn-search my-2 mr-sm-2  col-md-2" type="button" onclick="resetclick()">reset</button>
         </nav>
-        
+
+    </div>
+    <div class="container">
+        <div class="row row-eq-height pb-2">
+            <div class="list-group col-md-6 pl-3 pr-3">
+                {% if leftcon %} {{leftcon|safe}} {% else %} {%endif%}
+            </div>
+            <div class="list-group col-md-6 pr-3">
+                {% if rightcon %} {{rightcon|safe}} {% else %} {%endif%}
+            </div>
+        </div>
+    </div>
+    <div class="form-center">
+        {% if leftcon and rightcon %}
+        <textarea id="txtcomment" class="form-control commentbox" type="text" name="comment" placeholder="Comments..." aria-label="comment"></textarea>
+        <div class="row row-eq-height pt-2 pb-2">
+            <ul class="list-group col-md-6 pl-3 pr-3">
+                <button class="btn btn-search" type="button" onclick="send('hdleft')" value="leftside" name="preferred" value="left">I think the left side has better results.</button>
+            </ul>
+            <ul class="list-group col-md-6 pr-3">
+                <button class="btn btn-search" type="button" onclick="send('hdright')" value="rightside" name="preferred" value="right">I think the right side has better results.</button>
+            </ul>
+        </div>
+        {%endif%}
     </div>
     <!-- <div class="page">
         

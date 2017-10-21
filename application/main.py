@@ -59,6 +59,9 @@ def recommend():
     searchrd.save()
     return sitename
 
+@app.route('/sample')    
+def sample():
+     return render_template('sample.html')
 
 if __name__ == '__main__':
 
