@@ -9,7 +9,7 @@ class datereader():
         self.loctaion = loctaion
         self.keywords = keywords
         self.__lista = []
-        self.__listb = []
+        self.__listglassdoor = []
         self.proxy_handler = urllib.request.ProxyHandler({})
         
         if servlst is not None and servlst["host"] != "":

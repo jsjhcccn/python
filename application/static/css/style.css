@@ -1,0 +1,84 @@
+body {
+  padding-top: 60px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.btn-search {
+    color: #444444;
+    background-color: #fff;
+    border-color: #444444
+}
+
+.div-noresults {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.div-register {
+  text-align: center;
+}
+
+.btn-search:hover {
+    color: #fff;
+    background-color: #444444;
+    border-color: #444444
+}
+
+.container {
+  max-width: 8192px;
+}
+
+h4 {
+  max-height: 26px;
+  overflow: hidden;
+}
+
+.commentbox {
+  border: 5px solid rgba(0,0,0,.15) !important;
+}
+
+.form-center {
+  text-align: center;
+}
+
+.a-register {
+  font-size: 80%;
+  font-weight: 300
+}
+
+.p-usertab {
+  max-height: 38px;
+  min-width: 125px;
+}
+
+.form-login {
+    width: 100%;
+    padding: .5rem .75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #495057;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+@media (min-width: 1px) {
+  .list-group-item {
+    min-height: 137px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .list-group-item {
+    min-height: 118px;
+  }
+}
+
+/*@media (min-width: 2560px) {
+  .list-group-item {
+    min-height: 99px;
+  }
+} */
