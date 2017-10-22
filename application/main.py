@@ -1,9 +1,6 @@
 import urllib
-from sqlalchemy import Column, String, create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from flask import Flask, jsonify, render_template, request, g
-from toolunit.datereader import datereader
+from toolunit.datareader import datareader
 from toolunit.proxyreader import proxyreader
 import random
 from entity.searchrecoder import dbcall
@@ -17,7 +14,7 @@ def get_servlst():#获取全局变量
 @app.route('/')
 def index():
     servlst=get_servlst()
-    tempserver=servlst.getProxyClientConfig();
+    tempserver=servlst.getProxyClientConfig()
     location = request.args.get('l', "", type=str)
     keywords = request.args.get('k', "", type=str)
     locationva = str(urllib.parse.unquote(location))
@@ -32,7 +29,8 @@ def index():
         readdata = ""
         readgadata = ""
     else:
-        proxyrd = datereader(locationva, keywordsva,tempserver)
+        proxyrd = datareader(locationva, keywordsva,tempserver)
+        proxyrd.preget()
         readdata = proxyrd.readdata()
         readgadata = proxyrd.readgadata()
     rdindex = random.randint(0, 1)

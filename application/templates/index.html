@@ -6,7 +6,7 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/static/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="/static/favicon.ico">
-    <title>Compariment</title>
+    <title>compare</title>
 
     <script type="text/javascript" src="/static/js/jquery-3.2.1.min.js"></script>
     <script>
@@ -40,8 +40,8 @@
 </head>
 
 <body>
-        <input type="hidden" id='hdleft' value={{leftsite|safe}}>
-        <input type="hidden" id='hdright' value={{rightsite|safe}}>
+    <input type="hidden" id='hdleft' value={{leftsite|safe}}>
+    <input type="hidden" id='hdright' value={{rightsite|safe}}>
     <div class="navbar-search form-inline col-md-4 pr-0 pl-0 my-2 my-lg-0">
         <nav class="navbar navbar-expand-md fixed-top bg-light">
             <input class="form-control mr-sm-2 col-md-2" type="text" id="keywords" name="keywords" placeholder="keywords" aria-label="keywords"
@@ -55,9 +55,11 @@
     </div>
     <div class="container">
         <div class="row row-eq-height pb-2">
-            <div class="list-group col-md-6 pl-3 pr-3">
-                {% if leftcon %} {{leftcon|safe}} {% else %} {%endif%}
-            </div>
+            {% if leftcon %}
+            <ul class="list-group col-md-6 pl-3 pr-3">
+                {{leftcon|safe}}
+            </ul>
+            {%endif%}
             <div class="list-group col-md-6 pr-3">
                 {% if rightcon %} {{rightcon|safe}} {% else %} {%endif%}
             </div>
@@ -68,53 +70,13 @@
         <textarea id="txtcomment" class="form-control commentbox" type="text" name="comment" placeholder="Comments..." aria-label="comment"></textarea>
         <div class="row row-eq-height pt-2 pb-2">
             <ul class="list-group col-md-6 pl-3 pr-3">
-                <button class="btn btn-search" type="button" onclick="send('hdleft')" value="leftside" name="preferred" value="left">I think the left side has better results.</button>
+                <button class="btn btn-search" type="button" onclick="send('hdleft')" value="leftside" name="preferred" value="left">The left side has better results.</button>
             </ul>
             <ul class="list-group col-md-6 pr-3">
-                <button class="btn btn-search" type="button" onclick="send('hdright')" value="rightside" name="preferred" value="right">I think the right side has better results.</button>
+                <button class="btn btn-search" type="button" onclick="send('hdright')" value="rightside" name="preferred" value="right">The right side has better results.</button>
             </ul>
         </div>
         {%endif%}
     </div>
-    <!-- <div class="page">
-        
-        <div id="main">
-            <input type="hidden" id='hdleft' value={{leftsite|safe}}>
-            <input type="hidden" id='hdright' value={{rightsite|safe}}>
-            <div class="main-left" id="main-left">
-                {% if leftcon %} {{leftcon|safe}} {% else %}
-                <h1>left-side:no resault</h1>
-                {%endif%}
-            </div>
-
-            <div class="main-right" id="main-right"> {% if rightcon %} {{rightcon|safe}} {% else %}
-                <h1>right-side: no resault</h1>
-                {%endif%}</div>
-
-        </div>
-        <div id="footer" style="margin-left: 350px;">
-            <br/>
-            <br/> comment:
-            <textarea rows="5" name="S1" cols="20" id="txtcomment" style="width:50%"></textarea>
-
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-
-        <div id="btton_click" style="margin-left: 804px;">
-
-            <br/>
-            <input type="button" onclick="send('hdleft')" value="leftside" />
-            <input type="button" onclick="send('hdright')" value="rightside" />
-
-        </div>
-
-
-
-
-    </div> -->
+   
 </body>

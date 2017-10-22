@@ -2,6 +2,7 @@ from sqlalchemy import Table, MetaData,Column, String,Integer,Sequence,Text,Date
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
+
 Base = declarative_base()
 DB_CON_STR = 'mysql://root:123456Aa@localhost:3306/SpAppDb?charset=utf8'
 engine = create_engine(DB_CON_STR, echo=False)
